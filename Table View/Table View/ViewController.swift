@@ -8,22 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate {
-    
-    let array = ["aaa", "bbb", "ccc", "ddd"]
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return array.count
-    }
-
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-        
-        cell.textLabel?.text = array[indexPath.row]
-        
-        return cell
-    }
+class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
