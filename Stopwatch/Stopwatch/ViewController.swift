@@ -10,7 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var minutes:Int = 0
     var seconds:Int = 0
+    var mseconds:Int = 0
     var isTimerRunning = false
     @IBOutlet weak var startButtonOutlet: UIBarButtonItem!
     @IBOutlet weak var pauseButtonOutlet: UIBarButtonItem!
@@ -32,8 +34,10 @@ class ViewController: UIViewController {
         
     }
     @IBAction func startButton(sender: AnyObject) {
+            mseconds = 0
+            minutes = 0
             seconds = 0
-            counter.text = "0"
+            counter.text = "00:00:00"
             isTimerRunning = true
             startButtonOutlet.title = "Restart"
     }
@@ -41,15 +45,45 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("increaseSecond"), userInfo: nil, repeats: true)
+        var timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("increaseSecond"), userInfo: nil, repeats: true)
+        
+        //timer.invalidate() stops the timer
         
         
     }
     
     func increaseSecond(){
         if (isTimerRunning){
-            counter.text = String(++seconds)
-            println(seconds)
+            ++mseconds
+            if mseconds == 100 {
+                mseconds = 0
+                seconds++
+            }
+            
+            if seconds == 60 {
+                seconds = 0
+                minutes++
+            }
+
+            
+            var strMsecond = String(mseconds)
+            var strSecond = String(seconds)
+            var strMinute = String(minutes)
+
+            if mseconds < 10 {
+                strMsecond = "0" + strMsecond
+            }
+
+            if seconds < 10 {
+                strSecond = "0" + strSecond
+            }
+
+            if minutes < 10 {
+                strMinute = "0" + strMinute
+            }
+            
+            counter.text = "\(strMinute):\(strSecond):\(strMsecond)"
+            println(mseconds)
         }
     }
 
