@@ -8,21 +8,21 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class SecondViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func editingDone(sender: AnyObject) {
         if Title.text == "" {
             ErrorOut.text = "You need to set the title at least!"
         } else {
-            var todoId:Int = 0
-            if NSUserDefaults.standardUserDefaults().objectForKey("todoId") != nil {
-                var todoIdString = NSUserDefaults.standardUserDefaults().objectForKey("todoId") as String
-                todoId = todoIdString.toInt()! + 1
-            }
-            NSUserDefaults.standardUserDefaults().setObject(Title.text, forKey: String(todoId))
-            NSUserDefaults.standardUserDefaults().setValue(String(todoId), forKey: "todoId")
+            todoItemList.append(Title.text)
+            
+            let fixedTodoList = todoItemList
+            NSUserDefaults.standardUserDefaults().setObject(fixedTodoList, forKey: "todoList")
             NSUserDefaults.standardUserDefaults().synchronize()
+            ErrorOut.text = "Item has been saved"
             println("todo saved")
+            
+            self.view.endEditing(true)
         }
     }
     
@@ -38,6 +38,16 @@ class SecondViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true)
+    }
+  
 
 
 }
